@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Cuti</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Status Cuti</h1>
+        
+        <!-- Tabel Status Cuti -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Alasan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if leave_requests %}
+                        {% for leave in leave_requests %}
+                            <tr>
+                                <td>{{ leave.user.get_full_name }}</td>
+                                <td>{{ leave.start_date }}</td>
+                                <td>{{ leave.end_date }}</td>
+                                <td>{{ leave.reason }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if leave.status == 'Pending' %} bg-warning 
+                                        {% elif leave.status == 'Approved' %} bg-success 
+                                        {% elif leave.status == 'Rejected' %} bg-danger 
+                                        {% endif %}">
+                                        {{ leave.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">Belum ada data pengajuan cuti.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'leave_request' %}" class="btn btn-primary">Ajukan Cuti Baru</a>
+            <a button type="submit" class="btn btn-success btn-block" href="{% url 'staff_dashboard' %}">Kembali</a></button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

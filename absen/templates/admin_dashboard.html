@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Sidebar Color -->
+    <style>
+        /* Change sidebar background to light blue */
+        .sidebar {
+            background-color: #1E90FF;  /* Light Blue */
+        }
+
+        /* Optional: Change color for active nav item in the sidebar */
+        .sidebar .nav-item.active {
+            background-color: #87CEFA; /* Lighter blue when active */
+        }
+
+        /* Optional: Change text color for the sidebar */
+        .sidebar .nav-link {
+            color: #000000; /* Black text color */
+        }
+
+        /* Optional: Change hover color */
+        .sidebar .nav-link:hover {
+            background-color: #87CEFA; /* Lighter blue on hover */
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo KKC Cb" style="width: 40px; height: 40px;">
+                </div>
+                <div class="sidebar-brand-text mx-3">Kantor Kecamatan Cibinong</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">Menu</div>
+
+            <!-- Nav Item - Absen -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'data_absen' %}">
+                    <i class="fas fa-clock"></i>
+                    <span>Data Absen</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Cuti -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'leave_requests_list' %}">
+                    <i class="fas fa-plane"></i>
+                    <span>Data Cuti</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - History -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_employee' %}">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Tambah Pegawai</span>
+                </a>
+            </li>
+
+             <!-- Nav Item - History -->
+             <li class="nav-item">
+                <a class="nav-link" href="{% url 'employee_list' %}">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Data Pegawai</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - History -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'job_title_view' %}">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Data Jabatan</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Profile -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile_adm' %}">
+                    <i class="fas fa-user fa-2x"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Profile -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Keluar</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ username }}</span>
+                                <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Salam dan Nama -->
+                    <div class="row mb-4">
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card bg-white shadow h-70 py-3">
+                                <div class="card-body text-center">
+                                    <h4 class="text-gray-800">{{ greeting }}</h4>
+                                    <h5 class="text-gray-600">{{ username }}</h5>
+                                    <hr class="bg-primary w-50 mx-auto" style="height: 3px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card with Button -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card bg-primary shadow h-100 py-3">
+            <div class="card-body">
+                <!-- Baris Pertama -->
+                <div class="row justify-content-center">
+                    <!-- Data Absen -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-danger btn-block" href="{% url 'data_absen' %}">
+                            <i class="fas fa-clock fa-2x"></i>
+                            <div>Data Absen</div>
+                        </a>
+                    </div>
+
+                    <!-- Data Cuti -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-success btn-block" href="{% url 'leave_requests_list' %}">
+                            <i class="fas fa-plane fa-2x"></i>
+                            <div>Data Cuti</div>
+                        </a>
+                    </div>
+
+                    <!-- Tambah Pegawai -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-warning btn-block" href="{% url 'add_employee' %}">
+                            <i class="fas fa-user-plus fa-2x"></i>
+                            <div>Tambah Pegawai</div>
+                        </a>
+                    </div>
+
+                    <!-- Profil -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-info btn-block" href="{% url 'employee_list' %}">
+                            <i class="fas fa-clipboard-list fa-2x"></i>
+                            <div>Data Pegawai</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Spasi antara baris -->
+                <div class="my-4"></div>
+
+                <!-- Baris Kedua -->
+                <div class="row justify-content-center">
+                    <!-- Data Pegawai -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-warning btn-block" href="{% url 'job_title_view' %}">
+                            <i class="fas fa-briefcase fa-2x"></i>
+                            <div>Data Jabatan</div>
+                        </a>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="col-md-3">
+                        <a button class="btn btn-success btn-block" href="{% url 'profile_adm' %}">
+                            <i class="fas fa-user fa-2x"></i>
+                            <div>Profil</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                
+
+                <!-- End of Main Content -->
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+</body>
+
+</html>

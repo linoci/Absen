@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border-radius: 3px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Pengajuan Cuti</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Namauser</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Selesai</th>
+                <th>Alasan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in leave_requests %}
+            <tr>
+                <td>{{ leave.user.username }}</td>
+                <td>{{ leave.start_date }}</td>
+                <td>{{ leave.end_date }}</td>
+                <td>{{ leave.reason }}</td>
+                <td>{{ leave.status }}</td>
+                <td>
+                    <form method="post" action="{% url 'update_leave_status' leave.id %}">
+                        {% csrf_token %}
+                        <select name="status">
+                            <option value="Pending" {% if leave.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Approved" {% if leave.status == 'Approved' %}selected{% endif %}>Approved</option>
+                            <option value="Rejected" {% if leave.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <button type="submit" class="btn">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center;">No leave requests found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'admin_dashboard' %}" class="btn">Kembali</a>
+    </div>
+</body>
+</html>

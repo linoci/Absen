@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Absen</title>
+    <style>
+        /* Gaya Umum */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Gaya Form Filter */
+        .filter-form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-form input, 
+        .filter-form select, 
+        .filter-form button, 
+        .filter-form .btn {
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .filter-form input[type="text"], 
+        .filter-form select {
+            width: 150px;
+        }
+        .filter-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filter-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Gaya Button */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Button Export */
+        .btn-export {
+            background-color: #28a745;
+        }
+        .btn-export:hover {
+            background-color: #218838;
+        }
+
+        /* Button Kembali */
+        .btn-back {
+            background-color: #dc3545;
+        }
+        .btn-back:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .filter-form {
+                flex-direction: column;
+            }
+            .filter-form input, 
+            .filter-form select, 
+            .filter-form button, 
+            .filter-form .btn {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Judul Halaman -->
+    <h1>Data Absen</h1>
+
+    <!-- Filter Form -->
+    <form class="filter-form" method="get" action="{% url 'data_absen' %}">
+        <!-- Filter Nama -->
+        <input type="text" name="name" placeholder="Nama" value="{{ name }}">
+
+        <!-- Filter Bulan -->
+        <select name="month">
+            <option value="">Bulan</option>
+            {% for i in months %}
+            <option value="{{ i }}" {% if month == i|stringformat:"s" %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Filter Tahun -->
+        <select name="year">
+            <option value="">Tahun</option>
+            {% for i in years %}
+            <option value="{{ i }}" {% if year == i|stringformat:"s" %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Tombol Filter -->
+        <button type="submit">Filter</button>
+
+        <!-- Tombol Export ke Excel -->
+        <a href="{% url 'export_to_excel' %}?name={{ name }}&month={{ month }}&year={{ year }}" class="btn btn-export">Export ke Excel</a>
+
+        <!-- Tombol Kembali -->
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-back">Kembali</a>
+    </form>
+
+    <!-- Tabel Data Absen -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+                <th>Waktu</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_records %}
+            <tr>
+                <td>{{ record.user.username }}</td>
+                <td>{{ record.status|capfirst }}</td>
+                <td>{{ record.timestamp|date:"Y-m-d" }}</td>
+                <td>{{ record.timestamp|date:"H:i" }}</td>
+                <td>{{ record.latitude|default:"N/A" }}</td>
+                <td>{{ record.longitude|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center;">Tidak Ada Data Ditemukan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

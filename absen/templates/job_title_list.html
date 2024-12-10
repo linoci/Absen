@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Jabatan</title>
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Data Jabatan</h1>
+
+
+        <!-- Tabel Data Jabatan -->
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Role</th>
+                    <th>Nama Jabatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.get_role_display }}</td> 
+                    <td>{{ user.job_title }}</td> 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Tombol Back ke Dashboard -->
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Kembali</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+</body>
+</html>
